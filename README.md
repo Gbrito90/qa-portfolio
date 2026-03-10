@@ -56,4 +56,4 @@ qa-portfolio/
 
 ## 📬 Contato
 
-Fique à vontade para conectar comigo no [LinkedIn](#) ← *(adicione seu link)*
+Fique à vontade para conectar comigo no https://www.linkedin.com/in/guilherme-brito-rodrigues/
