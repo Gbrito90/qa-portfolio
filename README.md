@@ -10,11 +10,13 @@ Este repositório documenta minha jornada de aprendizado diário — estudos te�
 ```
 qa-portfolio/
 ├── fundamentos/
-│   └── conceitos-basicos.md        # Teoria: QA, QC, defeitos, bugs
+           ├── conceitos-basicos.md   
+           └── tecnicas-teste.md             # Teoria: QA, QC, defeitos, bugs
 ├── casos-de-teste/
 │   └── mercado-livre/
 │       ├── busca-produtos.md        # Casos de teste funcionais e negativos
 │       └── bug-report.md            # Bug reports encontrados
+│        └── avl-particao-mercadolivre.md
 └── exploratorio/
     └── mercado-livre.md             # Testes exploratórios
 ```
