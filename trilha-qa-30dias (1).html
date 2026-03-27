@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trilha QA — 30 Dias para o CTFL</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f1a14;
+    --ink2: #2d3e35;
+    --ink3: #5a7066;
+    --paper: #f7f5f0;
+    --paper2: #efe9df;
+    --paper3: #e4ddd1;
+    --green: #1a6644;
+    --green-l: #d4ead9;
+    --green-ll: #edf6ef;
+    --teal: #0d7878;
+    --teal-l: #d0eded;
+    --amber: #b05c0c;
+    --amber-l: #fae8d0;
+    --blue: #1a4e8a;
+    --blue-l: #d6e4f5;
+    --purple: #4a2d8a;
+    --purple-l: #e8e0f7;
+    --red: #932020;
+    --red-l: #faded8;
+    --rule: #c8c0b4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ─────────────────────────────────── */
+  .hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 40px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 80% at 90% 10%, #1a6644 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 10% 80%, #0d4a3a 0%, transparent 55%);
+    opacity: 0.55;
+  }
+  .hero-inner { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: #7fcea0;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: #7fcea0;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    color: #f0ede8;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: #7fcea0;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: #9bac9f;
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hero-pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #c8d8cc;
+    background: rgba(255,255,255,0.06);
+    letter-spacing: 0.01em;
+  }
+
+  /* ── NAV ──────────────────────────────────── */
+  .nav-strip {
+    background: var(--ink2);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-strip::-webkit-scrollbar { display: none; }
+  .nav-item {
+    font-size: 12px;
+    font-weight: 500;
+    color: #7a9880;
+    padding: 14px 18px;
+    white-space: nowrap;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: block;
+    letter-spacing: 0.03em;
+  }
+  .nav-item:hover { color: #a8d4b0; border-bottom-color: #3a8a5a; }
+
+  /* ── LAYOUT ───────────────────────────────── */
+  .container { max-width: 820px; margin: 0 auto; padding: 0 32px; }
+
+  section { padding: 56px 0 24px; }
+  section + section { border-top: 1px solid var(--rule); }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .section-intro {
+    font-size: 15px;
+    color: var(--ink2);
+    line-height: 1.75;
+    max-width: 640px;
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  /* ── OVERVIEW CARDS ───────────────────────── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .overview-card {
+    background: var(--paper2);
+    border: 1px solid var(--paper3);
+    border-radius: 12px;
+    padding: 20px 18px;
+  }
+  .overview-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .overview-label {
+    font-size: 12px;
+    color: var(--ink3);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* ── WEEK ACCORDION ───────────────────────── */
+  .weeks { display: flex; flex-direction: column; gap: 12px; }
+
+  .week {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    transition: box-shadow 0.2s;
+  }
+  .week:has(.week-body.open) {
+    box-shadow: 0 4px 24px rgba(15,26,20,0.08);
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    background: #fff;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .week-header:hover { background: var(--paper2); }
+
+  .week-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #fff;
+    background: var(--ink2);
+    padding: 4px 10px;
+    border-radius: 100px;
+    flex-shrink: 0;
+  }
+  .week-1 .week-num { background: var(--blue); }
+  .week-2 .week-num { background: var(--green); }
+  .week-3 .week-num { background: var(--amber); }
+  .week-4 .week-num { background: var(--purple); }
+
+  .week-info { flex: 1; min-width: 0; }
+  .week-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .week-tagline {
+    font-size: 12px;
+    color: var(--ink3);
+    margin-top: 1px;
+  }
+  .week-chevron {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--paper2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--ink3);
+    transition: transform 0.25s, background 0.15s;
+    flex-shrink: 0;
+  }
+  .week-body.open ~ * .week-chevron,
+  .week:has(.week-body.open) .week-chevron {
+    transform: rotate(180deg);
+    background: var(--green-l);
+    color: var(--green);
+  }
+
+  .week-body {
+    display: none;
+    background: #fff;
+    border-top: 1px solid var(--rule);
+  }
+  .week-body.open { display: block; }
+
+  .days-list { padding: 4px 0; }
+
+  .day-row {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 16px;
+    padding: 16px 22px;
+    border-bottom: 1px solid #f0ede8;
+    align-items: start;
+    transition: background 0.12s;
+  }
+  .day-row:last-child { border-bottom: none; }
+  .day-row:hover { background: var(--paper); }
+
+  .day-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink3);
+    padding-top: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .day-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .day-desc {
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.65;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+  }
+  .tag-ctfl  { background: var(--blue-l);   color: var(--blue); }
+  .tag-rev   { background: var(--green-ll); color: var(--green); }
+  .tag-prat  { background: var(--amber-l);  color: var(--amber); }
+  .tag-tool  { background: var(--teal-l);   color: var(--teal); }
+  .tag-port  { background: var(--purple-l); color: var(--purple); }
+  .tag-hot   { background: var(--red-l);    color: var(--red); }
+  .tag-strat { background: var(--green-ll); color: var(--green); }
+
+  .tip {
+    margin: 0 22px 20px;
+    padding: 14px 16px;
+    background: var(--green-ll);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+  .tip strong { color: var(--green); font-weight: 600; }
+
+  /* ── RESOURCES ────────────────────────────── */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .resource-card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .resource-card:hover {
+    box-shadow: 0 4px 16px rgba(15,26,20,0.08);
+    transform: translateY(-1px);
+  }
+  .resource-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    background: var(--paper2);
+  }
+  .resource-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .resource-desc {
+    font-size: 12px;
+    color: var(--ink3);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* ── ROADMAP CALLOUT ──────────────────────── */
+  .roadmap-callout {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .roadmap-callout::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 95% 50%, #1a6644 0%, transparent 65%);
+    opacity: 0.4;
+  }
+  .roadmap-callout > * { position: relative; z-index: 1; }
+  .roadmap-callout h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: #e8f2ea;
+  }
+  .roadmap-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 20px;
+  }
+  .roadmap-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .step-marker {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(127,206,160,0.2);
+    border: 1px solid rgba(127,206,160,0.4);
+    color: #7fcea0;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d8ead8;
+    margin-bottom: 2px;
+  }
+  .step-text span {
+    font-size: 12px;
+    color: #7a9880;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* ── CONNECTION BOX ───────────────────────── */
+  .connection-box {
+    background: var(--paper2);
+    border: 1px solid var(--paper3);
+    border-radius: 14px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+  .connection-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  .connection-pairs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .conn-from, .conn-to {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .conn-label {
+    font-size: 10px;
+    color: var(--ink3);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .conn-text { font-weight: 500; color: var(--ink2); }
+  .conn-arrow {
+    text-align: center;
+    color: var(--green);
+    font-size: 16px;
+  }
+
+  /* ── FOOTER ───────────────────────────────── */
+  .footer {
+    background: var(--ink2);
+    color: #6a8a70;
+    padding: 32px 40px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 64px;
+  }
+  .footer strong { color: #a0c8a4; }
+
+  /* ── ANIMATIONS ───────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner > * {
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-inner > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero-inner > *:nth-child(2) { animation-delay: 0.15s; }
+  .hero-inner > *:nth-child(3) { animation-delay: 0.25s; }
+  .hero-inner > *:nth-child(4) { animation-delay: 0.35s; }
+
+  /* ── RESPONSIVE ───────────────────────────── */
+  @media (max-width: 600px) {
+    .hero { padding: 56px 24px 48px; }
+    .container { padding: 0 20px; }
+    .day-row { grid-template-columns: 1fr; gap: 4px; }
+    .day-label { padding-top: 0; }
+    .connection-pairs { grid-template-columns: 1fr; }
+    .conn-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Guia de transição de carreira</div>
+    <h1 class="hero-title">30 dias para <em>entrar em QA</em></h1>
+    <p class="hero-sub">Um plano de estudos direto ao ponto, construído na linha do CTFL, para quem vem de Recrutamento &amp; Seleção e quer migrar para Qualidade de Software.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">1 hora por dia</span>
+      <span class="hero-pill">Orientado ao CTFL 4.0</span>
+      <span class="hero-pill">Teoria + prática</span>
+      <span class="hero-pill">Portfólio incluso</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav-strip">
+  <a class="nav-item" href="#visao">Visão geral</a>
+  <a class="nav-item" href="#conexao">Sua vantagem</a>
+  <a class="nav-item" href="#trilha">A trilha</a>
+  <a class="nav-item" href="#recursos">Recursos</a>
+  <a class="nav-item" href="#proximo">Próximos passos</a>
+</nav>
+
+<div class="container">
+
+  <!-- VISÃO GERAL -->
+  <section id="visao">
+    <div class="section-eyebrow">Visão geral</div>
+    <h2 class="section-title">O que você vai construir em 30 dias</h2>
+    <p class="section-intro">A estrutura é simples: as duas primeiras semanas são de vocabulário e teoria, a terceira é mão na massa, a quarta consolida com simulados. Quem estuda CTFL ao contrário — indo direto para os simulados — geralmente empaca porque os conceitos ficam sem contexto.</p>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="overview-num">30</div>
+        <div class="overview-label">dias de estudo estruturado</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-num">1h</div>
+        <div class="overview-label">por dia, sem exceção</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-num">6</div>
+        <div class="overview-label">capítulos do Syllabus CTFL cobertos</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-num">3+</div>
+        <div class="overview-label">simulados completos na última semana</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONEXÃO -->
+  <section id="conexao">
+    <div class="section-eyebrow">Sua vantagem oculta</div>
+    <h2 class="section-title">RH → QA: a transição faz mais sentido do que parece</h2>
+    <p class="section-intro">Quem trabalhou com recrutamento já domina habilidades que muitos QAs levam anos para desenvolver. O vocabulário técnico muda — a lógica é a mesma.</p>
+    <div class="connection-box">
+      <div class="connection-title">Transferindo o que você já sabe</div>
+      <div class="connection-pairs">
+
+        <div class="conn-from">
+          <div class="conn-label">Em RH você faz...</div>
+          <div class="conn-text">Entrevistas estruturadas com critérios claros</div>
+        </div>
+        <div class="conn-arrow">→</div>
+        <div class="conn-to">
+          <div class="conn-label">Em QA isso se chama...</div>
+          <div class="conn-text">Casos de teste com passos e resultados esperados</div>
+        </div>
+
+        <div class="conn-from" style="margin-top:8px">
+          <div class="conn-label">Em RH você faz...</div>
+          <div class="conn-text">Escuta ativa: o que o candidato disse vs. o que quis dizer</div>
+        </div>
+        <div class="conn-arrow" style="margin-top:8px">→</div>
+        <div class="conn-to" style="margin-top:8px">
+          <div class="conn-label">Em QA isso se chama...</div>
+          <div class="conn-text">Teste exploratório: o que o sistema faz vs. o que deveria fazer</div>
+        </div>
+
+        <div class="conn-from" style="margin-top:8px">
+          <div class="conn-label">Em RH você faz...</div>
+          <div class="conn-text">Relatórios de processo seletivo para gestores</div>
+        </div>
+        <div class="conn-arrow" style="margin-top:8px">→</div>
+        <div class="conn-to" style="margin-top:8px">
+          <div class="conn-label">Em QA isso se chama...</div>
+          <div class="conn-text">Relatório de bugs e métricas de qualidade para stakeholders</div>
+        </div>
+
+        <div class="conn-from" style="margin-top:8px">
+          <div class="conn-label">Em RH você faz...</div>
+          <div class="conn-text">Garantir que o processo entregue o perfil prometido</div>
+        </div>
+        <div class="conn-arrow" style="margin-top:8px">→</div>
+        <div class="conn-to" style="margin-top:8px">
+          <div class="conn-label">Em QA isso se chama...</div>
+          <div class="conn-text">Garantir que o produto entregue o que foi especificado</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TRILHA -->
+  <section id="trilha">
+    <div class="section-eyebrow">O plano</div>
+    <h2 class="section-title">A trilha semana a semana</h2>
+    <p class="section-intro">Clique em cada semana para ver os dias detalhados. A ordem importa — não pule etapas.</p>
+
+    <div class="weeks">
+
+      <!-- SEMANA 1 -->
+      <div class="week week-1">
+        <div class="week-header" onclick="toggleWeek('w1')">
+          <span class="week-num">SEMANA 01</span>
+          <div class="week-info">
+            <div class="week-name">Mindset e fundamentos</div>
+            <div class="week-tagline">Dias 1–7 · O que é QA e por que ele existe</div>
+          </div>
+          <div class="week-chevron" id="ch-w1">▾</div>
+        </div>
+        <div class="week-body open" id="w1">
+          <div class="days-list">
+            <div class="day-row">
+              <div class="day-label">Dias 1–2</div>
+              <div>
+                <div class="day-title">O papel do QA no desenvolvimento de software</div>
+                <div class="day-desc">Diferença entre QA, QC e Teste — são três coisas distintas. Ciclo de vida de software (SDLC). Por que erros custam mais quanto mais tarde são encontrados: o princípio do "custo da qualidade".</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 1</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 3–4</div>
+              <div>
+                <div class="day-title">Terminologia essencial</div>
+                <div class="day-desc">Bug, defeito, erro e falha são conceitos diferentes — e o CTFL cobra isso. As causas dos defeitos no software. O que é um teste bem-sucedido (encontrar um bug é sucesso, não fracasso). Os 7 princípios do teste.</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 1</span>
+                  <span class="tag tag-hot">mais cobrado no exame</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 5–6</div>
+              <div>
+                <div class="day-title">Modelos de desenvolvimento e o lugar do teste</div>
+                <div class="day-desc">Waterfall, V-model e Ágil/Scrum. Como o teste se encaixa em cada modelo. O conceito de "shift left" — testar o quanto antes, não só no final. Diferenças entre QA em times ágeis e cascata.</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 2</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dia 7</div>
+              <div>
+                <div class="day-title">Revisão + mapa do CTFL</div>
+                <div class="day-desc">Leia o sumário completo do Syllabus CTFL 4.0 — disponível de graça no site do BSTQB em português. Entenda os 6 capítulos e onde cada tema se encaixa. Monte um mapa mental simples a mão ou no Notion.</div>
+                <div class="tags">
+                  <span class="tag tag-rev">revisão</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip">
+            <strong>Dica de transição:</strong> Você já entende pessoas, processos e o que os stakeholders esperam. QA é exatamente isso — só que para software. O vocabulário técnico é novo; a lógica, você já domina.
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMANA 2 -->
+      <div class="week week-2">
+        <div class="week-header" onclick="toggleWeek('w2')">
+          <span class="week-num">SEMANA 02</span>
+          <div class="week-info">
+            <div class="week-name">Técnicas e tipos de teste</div>
+            <div class="week-tagline">Dias 8–14 · O núcleo do CTFL</div>
+          </div>
+          <div class="week-chevron" id="ch-w2">▾</div>
+        </div>
+        <div class="week-body" id="w2">
+          <div class="days-list">
+            <div class="day-row">
+              <div class="day-label">Dias 8–9</div>
+              <div>
+                <div class="day-title">Níveis de teste</div>
+                <div class="day-desc">Unitário, integração, sistema e aceitação (UAT). O que cada nível testa, quem é responsável e qual o objetivo. UAT é onde QA e usuário final se encontram — boa âncora para quem vem de RH.</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 2</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 10–11</div>
+              <div>
+                <div class="day-title">Técnicas de caixa-preta</div>
+                <div class="day-desc">Partição de equivalência, análise de valor limite, tabela de decisão e teste por transição de estado. São as técnicas mais cobradas no CTFL inteiro — dedique atenção redobrada. Pratique com exemplos do cotidiano: um formulário de cadastro, uma calculadora, um campo de data.</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 4</span>
+                  <span class="tag tag-hot">mais cobrado no exame</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 12–13</div>
+              <div>
+                <div class="day-title">Técnicas baseadas em experiência + tipos de teste</div>
+                <div class="day-desc">Teste exploratório e checklist-based. Testes funcionais vs. não-funcionais (performance, usabilidade, segurança). Diferença entre testes de regressão e confirmação — conceito simples, muito cobrado.</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 3 e 4</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dia 14</div>
+              <div>
+                <div class="day-title">Revisão + 1º simulado parcial</div>
+                <div class="day-desc">Faça 20–30 questões de simulado focando nos capítulos 1, 2 e 4. Anote cada erro e volte ao ponto específico do Syllabus. O erro é mais valioso que o acerto nessa fase.</div>
+                <div class="tags">
+                  <span class="tag tag-rev">revisão</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip">
+            <strong>Dica de estudo:</strong> As técnicas de caixa-preta parecem abstratas no começo. Use exemplos do cotidiano — um formulário de CEP, uma data de nascimento, uma calculadora. Contextualizar acelera muito a fixação.
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMANA 3 -->
+      <div class="week week-3">
+        <div class="week-header" onclick="toggleWeek('w3')">
+          <span class="week-num">SEMANA 03</span>
+          <div class="week-info">
+            <div class="week-name">Prática e ferramentas</div>
+            <div class="week-tagline">Dias 15–21 · Colocar a mão na massa</div>
+          </div>
+          <div class="week-chevron" id="ch-w3">▾</div>
+        </div>
+        <div class="week-body" id="w3">
+          <div class="days-list">
+            <div class="day-row">
+              <div class="day-label">Dias 15–16</div>
+              <div>
+                <div class="day-title">Escrita de casos de teste</div>
+                <div class="day-desc">Estrutura padrão: ID, pré-condição, passos detalhados, resultado esperado, resultado obtido. Pratique no SauceDemo (demo.saucedemo.com) — um app de e-commerce gratuito criado especificamente para prática de QA, cheio de bugs propositais.</div>
+                <div class="tags">
+                  <span class="tag tag-prat">prática</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 17–18</div>
+              <div>
+                <div class="day-title">Registro de bugs com Jira</div>
+                <div class="day-desc">Crie uma conta gratuita no Jira. Aprenda a abrir um bug com: título objetivo, descrição, passos para reproduzir, resultado esperado vs. obtido, ambiente, severidade e prioridade. Um bug bem documentado já é portfólio.</div>
+                <div class="tags">
+                  <span class="tag tag-tool">ferramenta</span>
+                  <span class="tag tag-prat">prática</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 19–20</div>
+              <div>
+                <div class="day-title">Teste exploratório em ambiente real</div>
+                <div class="day-desc">Use o "The Internet" (the-internet.herokuapp.com) — criado para praticar QA manual. Explore livremente e documente tudo que encontrar. Foque em edge cases: o que acontece quando o usuário não segue o caminho feliz?</div>
+                <div class="tags">
+                  <span class="tag tag-prat">prática</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dia 21</div>
+              <div>
+                <div class="day-title">Portfólio no GitHub</div>
+                <div class="day-desc">Crie um repositório público com os casos de teste e bugs documentados da semana. Um README.md bem escrito explicando o projeto e as técnicas usadas. Isso já é portfólio de QA — e faz enorme diferença em entrevistas para vagas júnior.</div>
+                <div class="tags">
+                  <span class="tag tag-port">portfólio</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip">
+            <strong>Por que praticar agora?</strong> Estudar teoria sem prática é como ler um manual de entrevista sem nunca ter entrevistado ninguém. A semana 3 transforma conceito em competência — e competência é o que aparece no portfólio.
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMANA 4 -->
+      <div class="week week-4">
+        <div class="week-header" onclick="toggleWeek('w4')">
+          <span class="week-num">SEMANA 04</span>
+          <div class="week-info">
+            <div class="week-name">Consolidação e preparação final</div>
+            <div class="week-tagline">Dias 22–30 · Simulados + visão do mercado</div>
+          </div>
+          <div class="week-chevron" id="ch-w4">▾</div>
+        </div>
+        <div class="week-body" id="w4">
+          <div class="days-list">
+            <div class="day-row">
+              <div class="day-label">Dias 22–24</div>
+              <div>
+                <div class="day-title">Gestão e planejamento de testes (CTFL cap. 5)</div>
+                <div class="day-desc">Plano de teste, estimativas, riscos de produto vs. projeto, métricas de qualidade (cobertura, densidade de defeitos, taxa de defeitos escapados). Esse capítulo faz muito mais sentido depois de ter praticado — por isso propositalmente veio aqui.</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 5</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 25–26</div>
+              <div>
+                <div class="day-title">Ferramentas de suporte ao teste (CTFL cap. 6) + Postman</div>
+                <div class="day-desc">Categorias de ferramentas segundo o CTFL. Introdução ao Postman: faça chamadas GET e POST para uma API pública como o JSONPlaceholder. Conhecimento de teste de API abre portas para vagas com foco técnico maior.</div>
+                <div class="tags">
+                  <span class="tag tag-ctfl">CTFL cap. 6</span>
+                  <span class="tag tag-tool">ferramenta</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dias 27–29</div>
+              <div>
+                <div class="day-title">Simulados completos CTFL</div>
+                <div class="day-desc">3 simulados de 40 questões cada. A nota de aprovação no exame é 65% — use esse número como referência. Revise cada erro e volte ao capítulo correspondente no Syllabus. Use ExamTopics ou a QA Stack Brasil para os simulados.</div>
+                <div class="tags">
+                  <span class="tag tag-rev">simulado</span>
+                  <span class="tag tag-hot">meta: 65%+</span>
+                </div>
+              </div>
+            </div>
+            <div class="day-row">
+              <div class="day-label">Dia 30</div>
+              <div>
+                <div class="day-title">Plano dos próximos 60 dias</div>
+                <div class="day-desc">Definir data do exame CTFL. Atualizar LinkedIn com foco em QA. Começar a aplicar para vagas júnior e estágio. Estudar o próximo passo: automação com Cypress ou Playwright, os frameworks mais demandados hoje para web.</div>
+                <div class="tags">
+                  <span class="tag tag-strat">estratégia</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip">
+            <strong>Sobre o exame:</strong> O CTFL custa em torno de R$1.000 via BSTQB. Ele não é obrigatório para entrar na área, mas acelera muito a credibilidade com recrutadores. Uma dica: marque a data <em>antes</em> de começar os estudos. A pressão ajuda.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RECURSOS -->
+  <section id="recursos">
+    <div class="section-eyebrow">Material de estudo</div>
+    <h2 class="section-title">Recursos recomendados</h2>
+    <p class="section-intro">Tudo listado aqui é gratuito ou tem versão gratuita suficiente para esse plano de 30 dias.</p>
+    <div class="resources-grid">
+      <div class="resource-card">
+        <div class="resource-icon">📄</div>
+        <div>
+          <div class="resource-name">CTFL Syllabus 4.0</div>
+          <div class="resource-desc">O documento oficial do exame, em português, disponível grátis em bstqb.org.br. É a fonte primária — leia, não apenas estude resumos.</div>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">📺</div>
+        <div>
+          <div class="resource-name">Canal Julio de Lima</div>
+          <div class="resource-desc">Melhor conteúdo de QA em PT-BR no YouTube. Didático, atualizado e com foco no CTFL. Ótimo complemento para os dias de teoria.</div>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🌐</div>
+        <div>
+          <div class="resource-name">SauceDemo</div>
+          <div class="resource-desc">demo.saucedemo.com — app de e-commerce feito para praticar testes manuais, com bugs intencionais para encontrar.</div>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🌐</div>
+        <div>
+          <div class="resource-name">The Internet</div>
+          <div class="resource-desc">the-internet.herokuapp.com — coleção de desafios de teste exploratório. Ideal para a semana 3.</div>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">📝</div>
+        <div>
+          <div class="resource-name">ExamTopics / QA Stack</div>
+          <div class="resource-desc">Banco de questões de simulado CTFL. Use na semana 4 para os três simulados completos antes da reta final.</div>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🔧</div>
+        <div>
+          <div class="resource-name">Jira Free + Postman</div>
+          <div class="resource-desc">As duas ferramentas mais requisitadas em vagas de QA. Conta gratuita suficiente para o plano inteiro e para o portfólio.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÓXIMOS PASSOS -->
+  <section id="proximo">
+    <div class="section-eyebrow">Depois dos 30 dias</div>
+    <h2 class="section-title">O caminho continua</h2>
+    <p class="section-intro">Trinta dias é o começo — não o destino. Aqui está o roadmap natural para os próximos meses.</p>
+    <div class="roadmap-callout">
+      <h3>Roadmap pós-plano</h3>
+      <p style="font-size:13px;color:#7a9880;font-weight:300;line-height:1.7;">A progressão natural de QA manual júnior para um perfil mais técnico e valorizado no mercado.</p>
+      <div class="roadmap-steps">
+        <div class="roadmap-step">
+          <div class="step-marker">01</div>
+          <div class="step-text">
+            <strong>Agendar o exame CTFL (mês 2)</strong>
+            <span>Marcar a data cria comprometimento real. O exame está disponível via BSTQB com vouchers periódicos com desconto.</span>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-marker">02</div>
+          <div class="step-text">
+            <strong>Aplicar para vagas júnior / estágio (mês 2–3)</strong>
+            <span>Com portfólio no GitHub e os fundamentos sólidos, é possível entrar em processos seletivos antes mesmo de ter a certificação em mãos.</span>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-marker">03</div>
+          <div class="step-text">
+            <strong>Introdução à automação: Cypress ou Playwright (mês 3–4)</strong>
+            <span>Os dois frameworks mais demandados no mercado para automação web. Cypress tem curva de aprendizado mais suave; Playwright é mais poderoso e está crescendo rapidamente.</span>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-marker">04</div>
+          <div class="step-text">
+            <strong>Teste de API com Postman e REST Assured (mês 4–5)</strong>
+            <span>Vagas de QA com teste de API pagam melhor e têm menos concorrência. É o próximo degrau natural após dominar o Postman básico da semana 4.</span>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-marker">05</div>
+          <div class="step-text">
+            <strong>CTFL-AT ou outra especialização (mês 6+)</strong>
+            <span>Após a certificação base, o CTFL-AT (Agile Tester) é uma especialização com boa demanda. Outras opções: CTFL-TAE (Test Automation Engineer) para quem seguir automação.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <strong>Trilha QA — 30 dias para o CTFL</strong><br>
+  Um plano montado para quem vem de Recrutamento &amp; Seleção e quer migrar para Qualidade de Software.<br>
+  Bons estudos — a área de QA precisa de pessoas que sabem se comunicar, documentar e pensar em processos. Você já tem isso.
+</div>
+
+<script>
+  function toggleWeek(id) {
+    const body = document.getElementById(id);
+    const ch   = document.getElementById('ch-' + id);
+    const open = body.classList.contains('open');
+    body.classList.toggle('open', !open);
+    body.style.display = open ? 'none' : 'block';
+  }
+  // init: only week 1 open
+  ['w2','w3','w4'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
